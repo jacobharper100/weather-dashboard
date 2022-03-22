@@ -1,0 +1,19 @@
+{
+  "name": "weather-dashboard",
+  "version": "1.0.0",
+  "description": "A dashboard web-app for displaying weather API data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobharper100/weather-dashboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacobharper100/weather-dashboard/issues"
+  },
+  "homepage": "https://github.com/jacobharper100/weather-dashboard#readme"
+}
