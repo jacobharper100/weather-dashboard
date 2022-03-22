@@ -4,7 +4,7 @@ module.exports = {
     "mode": "development",
     "entry": "./src/client/index.js",
     "output": {
-        "path": __dirname + '/src/build',
+        "path": __dirname + '/build',
         "filename": "bundle.js"
     },
     "devtool": "source-map",
