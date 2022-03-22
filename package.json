@@ -4,7 +4,7 @@
   "description": "A dashboard web-app for displaying weather API data.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --mode development --open --hot"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,26 @@
   "bugs": {
     "url": "https://github.com/jacobharper100/weather-dashboard/issues"
   },
-  "homepage": "https://github.com/jacobharper100/weather-dashboard#readme"
+  "homepage": "https://github.com/jacobharper100/weather-dashboard#readme",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.4",
+    "css-loader": "^6.7.1",
+    "eslint": "^7.32.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-react": "^7.29.4",
+    "html-loader": "^3.1.0",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
 }
