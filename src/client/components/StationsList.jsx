@@ -15,16 +15,28 @@ const columns = [
       width: 150,
     },
     {
-        field: 'status',
+        field: 'online',
         headerName: 'Status',
         width: 100,
         sortable: false,
-        renderCell: () => <Chip label="Online" color="success" />,
+        renderCell: (params) => {
+            
+            const api = params.api;
+            const thisRow = {};
+    
+            api.getAllColumns()
+                .filter((c) => c.field !== "__check__" && !!c)
+                .forEach((c) => {
+                    thisRow[c.field] = params.getValue(params.id, c.field)
+                });
+
+            return <Chip label={thisRow.online ? "Online" : "Offline"} color={thisRow.online ? "success" : "error"} />
+        },
     },
     {
         field: "action",
         headerName: 'Action',
-        width: 100,
+        width: 150,
         sortable: false,
         renderCell: (params) => {
             const onClick = (e) => {
@@ -41,19 +53,19 @@ const columns = [
     
                 return alert(JSON.stringify(thisRow, null, 4));
             }
-            return <Button onClick={onClick}>Click</Button>;
+            return <Button variant="outlined" onClick={onClick}>Toggle Active</Button>;
         },
     },
 ];
   
 const rows = [
-    { id: 1, stationName: 'Ottawa' },
-    { id: 2, stationName: 'Vancouver' },
-    { id: 3, stationName: 'Toronto' },
-    { id: 4, stationName: 'Montreal' },
-    { id: 5, stationName: 'Edmonton' },
-    { id: 6, stationName: 'Calgary' },
-    { id: 7, stationName: 'Victoria' },
+    { id: 1, stationName: 'Ottawa', online: false },
+    { id: 2, stationName: 'Vancouver', online: false },
+    { id: 3, stationName: 'Toronto', online: false },
+    { id: 4, stationName: 'Montreal', online: true },
+    { id: 5, stationName: 'Edmonton', online: false },
+    { id: 6, stationName: 'Calgary', online: false },
+    { id: 7, stationName: 'Victoria', online: false },
 ];
 
 const StationsList = () => {
