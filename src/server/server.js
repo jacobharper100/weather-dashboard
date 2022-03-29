@@ -1,19 +1,7 @@
 const express = require('express');
-const path = require('path');
-
 const app = express();
-const PORT = 3000;
 
-app.get('/dashboard', function(req, res) {
-    res.send("BOOP");
-});
+// Get PORT from environment, default to 3000
+app.set('port', process.env.PORT || 3000);
 
-///
-
-app.get('/ping', (req, res) => {
-    res.send('Pong!');
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen(app.get('port'));

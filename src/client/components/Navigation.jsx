@@ -1,22 +1,32 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import Button from '@mui/material/Button';
+import { NavLink } from "react-router-dom";
+import Card from '@mui/material/Card';
 
 const Navigation = () => {
     
     return (
-        <nav>
-            <Link to="/dashboard" style={{textDecoration: 'none'}}>
-                <Button variant="text">
-                    Dashboard
-                </Button>
-            </Link>
-            <Link to="/stations" style={{textDecoration: 'none'}}>
-                <Button variant="text">
-                    Stations
-                </Button>
-            </Link>
-        </nav>
+        <Card>
+            <div className="w3-bar">
+                <NavLink 
+                    exact="true" to="/dashboard" 
+                    className={({ isActive }) => 
+                        (isActive ? 
+                            "w3-bar-item w3-button w3-hover-none w3-text-white w3-hover-text-white" : 
+                            "w3-bar-item w3-button w3-hover-none w3-text-grey w3-hover-text-white")
+                    }
+                >Dashboard
+                </NavLink>
+                <NavLink 
+                    exact="true" to="/stations" 
+                    className={({ isActive }) => 
+                        (isActive ? 
+                            "w3-bar-item w3-button w3-hover-none w3-text-white w3-hover-text-white" : 
+                            "w3-bar-item w3-button w3-hover-none w3-text-grey w3-hover-text-white")
+                    } 
+                >Stations
+                </NavLink>
+            </div>
+        </Card>
     );
 }
 
