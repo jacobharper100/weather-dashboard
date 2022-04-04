@@ -1,6 +1,5 @@
 import React from "react";
 
-import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,11 +12,10 @@ import Checkbox from '@mui/material/Checkbox';
 class StationsForm extends React.Component {
     
     constructor(props) {
-        
         super(props);
-
-        this.onSubmit = props.onSubmit;
         
+        this.onSubmit = props.onSubmit;
+
         this.state = {
             station_name: '',
             station_api: '',
@@ -31,6 +29,7 @@ class StationsForm extends React.Component {
 
     handleChange(event) {
         const newState = {};
+        // Sets newState[id] = value where id is the target form field
         newState[event.target.id || 'station_api'] = event.target.value
         this.setState(newState);
     }
