@@ -92,7 +92,7 @@ function sendUpdateMessage(station) {
                 service: service
             });
         } else {
-            console.warn('service with domain "%s" is not registered!');
+            console.warn('service with domain "%s" is not registered!', station.station_api);
 
             // Force station offline
             pool.send(station, {
