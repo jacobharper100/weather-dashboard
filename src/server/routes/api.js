@@ -4,24 +4,31 @@ const controller = require('../stations/controller')
 
 controller.init();
 
-router.get('/stations', (req, res) => {
-    // TODO: return a list of Station objects
-    // const stations = Object.values(controller.stations).map(value => value.station);
-});
+router.route('/stations')
+    .get((_req, res) => {
 
-router.post('/stations', (req, res) => {
-    // TODO: add a new station
-    // controller.add(station);
-});
+        const stationsList = Object.values(controller.stations)
+            .map(value => value.station);
 
-router.put('/stations', (req, res) => {
-    // TODO: update an existing station
-    // controller.update(station);
-});
-
-router.delete('/stations', (req, res) => {
-    // TODO: remove a station
-    // controller.remove(station);
-});
+        res.status(200).send({ results: stationsList });
+    })
+    .post((req, res) => {
+        // controller.add(req.body).then(json => {
+        //     return res.status(200).json(json);
+        // });
+        res.status(200).send();
+    })
+    .put((_req, res) => {
+        // controller.update(req.body).then(json => {
+        //     return res.status(200).json(json);
+        // });
+        res.status(200).send();
+    })
+    .delete((_req, res) => {
+        // controller.remove(req.body).then(json => {
+        //     return res.status(200).json(json);
+        // });
+        res.status(200).send();
+    })
 
 module.exports = router;

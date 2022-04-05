@@ -20,7 +20,7 @@ controller.init = function () {
             // HACK: ideally we'd use controller.add, but we don't want to attempt to create a database entry.
             //  Really, we should just extract the logic inside the create callback and call that directly.
             if (pool.spawn(station) !== null) {
-                controller.stations[station.id] = {
+                controller.stations[station._id] = {
                     station: station,
                     data: null
                 };
@@ -32,42 +32,40 @@ controller.init = function () {
 };
 
 controller.add = function (station) {
-    const worker = pool.spawn(station);
+    Station.create(station, (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
 
-    if (worker !== null) {
-        Station.create(station, (err) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
+        controller.stations[station._id] = {
+            station: station,
+            data: null
+        };
 
-            controller.stations[station.id] = {
-                station: station,
-                data: null
-            };
+        const worker = pool.spawn(station);
 
-            worker.once('spawn', () => {
-                Service.findOne({ domain: station.station_api }, (err, service) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
+        worker.once('spawn', () => {
+            Service.findOne({ domain: station.station_api }, (err, service) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
 
-                    worker.send({
-                        station: station,
-                        service: service
-                    });
+                worker.send({
+                    station: station,
+                    service: service
                 });
             });
         });
-    }
+    });
 };
 
 controller.update = function (station) {
-    if (!(station.id in controller.stations)) {
+    if (!(station._id in controller.stations)) {
         controller.add(station);
     } else {
-        Station.replaceOne({ id: station.id }, station, (err) => {
+        Station.replaceOne({ _id: station._id }, station, (err) => {
             if (err) {
                 console.error(err);
                 return;
@@ -84,22 +82,22 @@ controller.update = function (station) {
                     service: service
                 });
 
-                controller.stations[station.id].station = station;
+                controller.stations[station._id].station = station;
             });
         });
     }
 };
 
 controller.remove = function (station) {
-    Station.findOneAndDelete({ id: station.id }).exec();
-    delete controller.stations[station.id];
+    Station.findOneAndDelete({ _id: station._id }).exec();
+    delete controller.stations[station._id];
     pool.kill(station);
 };
 
 module.exports = controller;
 
 pool.on('message', (station, message) => {
-    controller.stations[station.id].data = message;
+    controller.stations[station._id].data = message;
 });
 
 pool.on('error', (station, err) => {

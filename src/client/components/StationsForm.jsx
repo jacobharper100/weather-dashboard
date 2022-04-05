@@ -63,7 +63,7 @@ class StationsForm extends React.Component {
                                 value={this.state.station_api}
                                 onChange={this.handleChange}
                                 required >
-                                <MenuItem value={'weather.com'}>weather.com</MenuItem>
+                                <MenuItem value={'openweathermap.org'}>openweathermap.org</MenuItem>
                             </Select>
                         </FormControl>
                     </div>
@@ -72,6 +72,7 @@ class StationsForm extends React.Component {
                             <TextField 
                                 id="station_location" 
                                 label="Station Location" 
+                                placeholder="e.g., London..."
                                 value={this.state.station_location} 
                                 onChange={this.handleChange}
                                 variant="outlined"

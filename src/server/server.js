@@ -17,6 +17,8 @@ mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}`, {
 mongoose.model('Station', require('./models/station'));
 mongoose.model('Service', require('./models/service'));
 
+app.use(express.json());
+
 // Attach routing middleware
 app.use(require('./routes/index'));
 

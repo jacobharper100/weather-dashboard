@@ -34,8 +34,13 @@ const Stations = () => {
 
         fetch('/api/stations', requestOptions)
             .then(res => res.json())
-            .then(json => {
-                fetchRows();
+            .then(_ => {
+                setRows(rows.map(item => {
+                    if (item.id === row.id) {
+                        return row;
+                    }
+                    return item;
+                }));
             });
     }
 
@@ -49,13 +54,14 @@ const Stations = () => {
 
         fetch('/api/stations', requestOptions)
             .then(res => res.json())
-            .then(json => {
-                fetchRows();
+            .then(_ => {
+                setRows(rows.filter(item => item.id !== row.id));
             });
     }
 
     // Add a new weather station to the server's list
     const handleAdd = (formState) => {
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -64,8 +70,8 @@ const Stations = () => {
 
         fetch('/api/stations', requestOptions)
             .then(res => res.json())
-            .then(json => {
-                setRows([...rows, json.results]);
+            .then(res => {
+                setRows([...rows, res]);
             });
     };
 
