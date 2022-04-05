@@ -42,6 +42,8 @@ pool.clear = function () {
     for (const worker of Object.values(pool.workers)) {
         worker.kill();
     }
+
+    pool.workers = {};
 };
 
 module.exports = pool;
