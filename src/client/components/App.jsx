@@ -3,8 +3,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes, Navigate } from "react-router-dom";
 
-import Navigation from './Navigation.jsx';
-import Dashboard from './Dashboard.jsx';
 import Stations from './Stations.jsx';
 
 const App = () => {
@@ -23,21 +21,14 @@ const App = () => {
             {/* Apply theme */}
             <CssBaseline/>
                 <div className="w3-margin">
-                    <Navigation/>
                     <div className="w3-margin-top">
                         <Routes>
                             <Route 
-                                path="/" 
-                                element={<Navigate replace to="/dashboard"/>}/>
-                            <Route 
-                                path="/dashboard"  
-                                element={<Dashboard/>}/>
-                            <Route 
                                 path="/stations" 
                                 element={<Stations/>}/>
-                            {/* Custom 404 Page <Route 
+                            <Route 
                                 path="*" 
-                                element={<Error/>}/>*/}
+                                element={<Navigate replace to="/stations"/>}/>
                         </Routes>
                     </div>
                 </div>
