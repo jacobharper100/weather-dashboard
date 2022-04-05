@@ -8,24 +8,27 @@ const getCurrentRow = (params) => {
     const api = params.api;
     const currentRow = {};
 
-    api.getAllColumns()
-        .filter((c) => c.field !== "__check__" && !!c)
-        .forEach((c) => {
-            currentRow[c.field] = params.getValue(params.id, c.field)
-        });
+    // Populate currentRow with all column fields in the stations list
+    api.getAllColumns().filter((c) => {
+        c.field !== "__check__" && !!c
+    }).forEach((c) => {
+        currentRow[c.field] = params.getValue(params.id, c.field)
+    });
+
     return currentRow;
-}
+};
 
 const StationsList = (props) => {
-    
+    // Destructure toggle and delete handlers from props
     const { onToggle, onDelete } = props;
 
+    // Column definitions
     const columns = [
         {
             field: 'id',
             headerName: 'ID',
             width: 25,
-          },
+        },
         {
           field: 'station_name',
           headerName: 'Station Name',
@@ -48,7 +51,11 @@ const StationsList = (props) => {
             sortable: false,
             renderCell: (params) => {
                 const currentRow = getCurrentRow(params);
-                return <Chip label={currentRow.station_online ? "Online" : "Offline"} color={currentRow.station_online ? "success" : "error"} />
+
+                // Online / Offline label
+                return <Chip 
+                    label={currentRow.station_online ? "Online" : "Offline"} 
+                    color={currentRow.station_online ? "success" : "error"} />
             },
         },
         {
@@ -57,11 +64,13 @@ const StationsList = (props) => {
             width: 185,
             sortable: false,
             renderCell: (params) => {
+                // Propagates currentRow object to Stations component
+
                 const toggleOnline = (event) => {
                     event.stopPropagation();
                     onToggle(getCurrentRow(params));
                 }
-    
+                
                 const deleteRow = (event) => {
                     event.stopPropagation();
                     onDelete(getCurrentRow(params));
@@ -69,8 +78,12 @@ const StationsList = (props) => {
     
                 return (
                     <ButtonGroup color="error">
-                        <Button variant="outlined"  onClick={toggleOnline}>Toggle</Button>
-                        <Button variant="contained" onClick={deleteRow}>Delete</Button>
+                        <Button 
+                            variant="outlined"  
+                            onClick={toggleOnline}>handleToggle</Button>
+                        <Button 
+                            variant="contained" 
+                            onClick={deleteRow}>Delete</Button>
                     </ButtonGroup>
                 );
             },
@@ -90,6 +103,6 @@ const StationsList = (props) => {
             rows={props.rows}
         />
     );
-}
+};
 
 export default StationsList;

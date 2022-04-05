@@ -9,7 +9,6 @@ import DialogContent from '@mui/material/DialogContent';
 import StationsForm from './StationsForm.jsx';
 
 const DialogPopup = (props) => {
-  
     const { onClose, open } = props;
 
     const handleClose = () => {
@@ -28,17 +27,19 @@ const DialogPopup = (props) => {
             </DialogContent>
         </Dialog>
     );
-}
+};
 
+// Make Dialog props required
 DialogPopup.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
 };
 
 const StationsDialog = (props) => {
-    
+    // Destructure onSubmit functions from props
     const { onSubmit } = props;
 
+    // Keep track of dialog being open
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -46,6 +47,8 @@ const StationsDialog = (props) => {
     };
 
     const handleClose = (formState) => {
+        // If the form is not empty (when user exits form), submit the form
+        // data to the server
         if (Object.keys(formState).length > 0) {
             onSubmit(formState);
         }
@@ -63,6 +66,6 @@ const StationsDialog = (props) => {
             />
         </div>
     );
-}
+};
 
 export default StationsDialog;

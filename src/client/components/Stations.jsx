@@ -5,10 +5,12 @@ import StationsList from './StationsList.jsx';
 import StationsDialog from './StationsDialog.jsx';
 
 const Stations = () => {
-
+    // Store row data for StationsList
     const [rows, setRows] = useState([]);
 
-    const fetchRows = () => {
+    // Get a list of all stations currently stored on the server and set 
+    // this as the StationsList rows
+    const fetchRows = () => {  
         fetch('/api/stations')
             .then(res => res.json())
             .then(json => {
@@ -16,11 +18,14 @@ const Stations = () => {
             });
     }
 
+    // Whenever rows are empty, fetch rows from server
     useEffect(() => {
         fetchRows();
     }, [])
 
-    const handleToggle = (row) => {
+    // Update selected weather station's information on the server
+    // Currently this just means toggling the 'online' state
+    const handleToggle = (row) => {  
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -34,6 +39,7 @@ const Stations = () => {
             });
     }
 
+    // Delete selected weather station's information on the server
     const handleDelete = (row) => {
         const requestOptions = {
             method: 'DELETE',
@@ -48,6 +54,7 @@ const Stations = () => {
             });
     }
 
+    // Add a new weather station to the server's list
     const handleAdd = (formState) => {
         const requestOptions = {
             method: 'POST',
@@ -66,7 +73,10 @@ const Stations = () => {
         <Card>
             <div className="w3-margin">
                 <h1>Stations</h1>
-                <StationsList rows={rows} onToggle={handleToggle} onDelete={handleDelete}/>
+                <StationsList 
+                    rows={rows} 
+                    onToggle={handleToggle}
+                    onDelete={handleDelete}/>
                 <br/>
                 <StationsDialog onSubmit={handleAdd}/>
             </div>

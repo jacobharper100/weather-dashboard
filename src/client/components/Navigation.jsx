@@ -4,31 +4,30 @@ import Card from '@mui/material/Card';
 
 const Navigation = () => {
     
+    // Set link highlight class for active navigation link
+    const setActiveClass = (isActive) => {
+        const base = "w3-bar-item w3-button w3-hover-none w3-hover-text-white ";
+        return isActive ? 
+            base + "w3-text-white" : 
+            base + "w3-text-grey";
+    }
+
     return (
         <Card>
             <div className="w3-bar">
                 <NavLink 
                     exact="true" to="/dashboard" 
-                    // Highlight link when this is the current page
-                    className={({ isActive }) => 
-                        (isActive ? 
-                            "w3-bar-item w3-button w3-hover-none w3-text-white w3-hover-text-white" : 
-                            "w3-bar-item w3-button w3-hover-none w3-text-grey w3-hover-text-white")
-                    }
+                    className={({ isActive }) => setActiveClass(isActive)}
                 >Dashboard
                 </NavLink>
                 <NavLink 
                     exact="true" to="/stations" 
-                    className={({ isActive }) => 
-                        (isActive ? 
-                            "w3-bar-item w3-button w3-hover-none w3-text-white w3-hover-text-white" : 
-                            "w3-bar-item w3-button w3-hover-none w3-text-grey w3-hover-text-white")
-                    } 
+                    className={({ isActive }) => setActiveClass(isActive)}
                 >Stations
                 </NavLink>
             </div>
         </Card>
     );
-}
+};
 
 export default Navigation;
