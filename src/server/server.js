@@ -18,7 +18,7 @@ mongoose.model('Station', require('./models/station'));
 mongoose.model('Service', require('./models/service'));
 
 // Attach routing middleware
-// app.use(require('./routes/index'));
+app.use(require('./routes/index'));
 
 // Get PORT from environment, default to 3000
 app.set('port', process.env.PORT || 3000);

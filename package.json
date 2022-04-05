@@ -25,6 +25,7 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/material": "^5.5.3",
     "@mui/x-data-grid": "^5.7.0",
+    "cron": "^1.8.2",
     "dotenv": "^16.0.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.9",
