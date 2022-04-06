@@ -72,10 +72,8 @@ controller.add = async function (req, res) {
 /** Updates an existing station. */
 controller.update = async function (req, res) {
     try {
-        const updatedStation = await Station.findByIdAndUpdate(req.params.id, { 
-            station_online: !req.body.station_online 
-        });
-        await updatedStation.save();
+        const updates = { station_online: req.body.station_online };
+        const updatedStation = await Station.findByIdAndUpdate(req.params.id, updates, { new: true });
 
         controller.stations[updatedStation._id.toString()].station = updatedStation;
         if (!updatedStation.station_online) {
@@ -84,7 +82,7 @@ controller.update = async function (req, res) {
 
         sendUpdateMessage(updatedStation);
 
-        console.log('[!] Updated station (%s)', updatedStation.station_name);
+        console.log('[!] Updated station (%s), online:(%s)', updatedStation.station_name, updatedStation.station_online);
 
         res.status(200).send(updatedStation);
     } catch (err) {

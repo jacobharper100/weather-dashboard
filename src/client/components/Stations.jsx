@@ -27,7 +27,9 @@ const Stations = () => {
 
     // Update selected weather station's information on the server
     // Currently this just means toggling the 'online' state
-    const handleToggle = (formState) => {  
+    const handleToggle = (formState) => {
+        formState.station_online = !formState.station_online;
+
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
