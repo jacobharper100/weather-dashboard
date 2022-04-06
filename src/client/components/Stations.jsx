@@ -25,35 +25,38 @@ const Stations = () => {
 
     // Update selected weather station's information on the server
     // Currently this just means toggling the 'online' state
-    const handleToggle = (row) => {  
+    const handleToggle = (formState) => {  
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(row)
+            body: JSON.stringify(formState)
         };
 
-        fetch(`/api/stations/${row._id}`, requestOptions)
+        fetch(`/api/stations/${formState._id}`, requestOptions)
             .then(res => res.json())
-            .then(_ => {
+            .then(json => {
                 fetchRows();
             });
     }
 
     // Delete selected weather station's information on the server
-    const handleDelete = (row) => {
+    const handleDelete = (formState) => {
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         };
 
-        fetch(`/api/stations/${row._id}`, requestOptions)
+        fetch(`/api/stations/${formState._id}`, requestOptions)
             .then(_ => {
-                fetchRows();
+                // Remove row from rows
+                setRows(rows.filter(row => row._id !== formState._id));
             });
     }
 
     // Add a new weather station to the server's list
     const handleAdd = (formState) => {
+
+        console.log(formState);
 
         const requestOptions = {
             method: 'POST',

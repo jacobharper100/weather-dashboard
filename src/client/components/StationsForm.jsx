@@ -24,13 +24,20 @@ class StationsForm extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleCheck = this.handleCheck.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
         const newState = {};
         // Sets newState[id] = value where id is the target form field
-        newState[event.target.id || 'station_api'] = event.target.value
+        newState[event.target.id || 'station_api'] = event.target.value;
+        this.setState(newState);
+    }
+
+    handleCheck(event) {
+        const newState = {};
+        newState[event.target.id] = event.target.checked;
         this.setState(newState);
     }
 
@@ -85,7 +92,7 @@ class StationsForm extends React.Component {
                                 <Checkbox 
                                     id="station_online"
                                     value={this.state.station_online}
-                                    onChange={this.handleChange} />
+                                    onChange={this.handleCheck} />
                             } 
                             label="Online"/>
                     </div>
