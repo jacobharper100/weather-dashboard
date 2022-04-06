@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-client": "npx webpack serve",
-    "dev-server": "node src/server/server.js",
+    "dev-server": "nodemon src/server/server.js",
     "dev": "concurrently --kill-others \"npm run dev-server\" \"npm run dev-client\""
   },
   "repository": {
@@ -29,6 +29,7 @@
     "dotenv": "^16.0.0",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

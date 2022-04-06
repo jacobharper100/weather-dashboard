@@ -8,6 +8,7 @@ controller.stations = {};
 
 /** Initialize the station pool. */
 controller.init = function () {
+    
     pool.clear();
 
     // Find and spawn all stations stored in the database
@@ -66,7 +67,7 @@ function spawnWorker(station) {
             station: station,
             data: null
         };
-
+      
         worker.once('spawn', () => {
             console.log('spawned worker .. PID:[%d], name:"%s", api:"%s", id:"%s"',
                 worker.pid,
@@ -74,11 +75,9 @@ function spawnWorker(station) {
                 station.station_api,
                 station._id.toString()
             );
-
             sendUpdateMessage(station);
         });
     }
-
     return success;
 }
 
