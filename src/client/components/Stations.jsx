@@ -18,7 +18,7 @@ const Stations = () => {
             });
     }
 
-    // Whenever rows are empty, fetch rows from server
+    // Rows empty, fetch rows from server
     useEffect(() => {
         fetchRows();
     }, [])

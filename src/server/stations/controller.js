@@ -23,6 +23,14 @@ controller.init = function () {
     });
 };
 
+/** Get a list of all stations */
+controller.get = async function (req, res) {
+    
+    const stations = Object.values(controller.stations);
+
+    res.send({ results: stations });
+}
+
 /** Adds a new station to the station pool with an assigned ID. */
 controller.add = async function (req, res) {
     const addedStation = new Station(req.body);

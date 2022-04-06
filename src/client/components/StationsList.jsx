@@ -32,23 +32,23 @@ const StationsList = (props) => {
             width: 150,
         },
         {
-            field: 'station_temperature',
+            field: 'station_weather',
+            headerName: 'Weather',
+            width: 100,
+        },
+        {
+            field: 'station_temp',
             headerName: 'Temperature',
             width: 100,
         },
         {
-            field: 'station_high',
-            headerName: 'High',
+            field: 'station_pressure',
+            headerName: 'Pressure',
             width: 100,
         },
         {
-            field: 'station_low',
-            headerName: 'Low',
-            width: 100,
-        },
-        {
-            field: 'station_weather',
-            headerName: 'Weather',
+            field: 'station_humidity',
+            headerName: 'Humidity',
             width: 100,
         },
         {

@@ -3,19 +3,12 @@ const router = express.Router();
 const controller = require('../stations/controller')
 const mongoose = require('mongoose');
 const Station = mongoose.model('Station');
-const Service = mongoose.model('Service');
+require('dotenv').config();
 
 controller.init();
 
-
 router.get('/stations', async (req, res) => {
-    const stations = await Station.find({});
-
-    try {
-        res.send({ results: stations });
-    } catch (err) {
-        res.status(500).send(err);
-    }
+    controller.get(req, res);
 });
 
 router.post('/stations', (req, res) => {

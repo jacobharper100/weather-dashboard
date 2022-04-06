@@ -1,7 +1,7 @@
-require('dotenv').config({ path: '../../.env' });
-
 const express = require('express');
 const app = express();
+require('dotenv').config({ path: '../../.env' });
+
 
 // Setup database
 const mongoose = require('mongoose');
@@ -25,4 +25,4 @@ app.use(require('./routes/index'));
 // Get PORT from environment, default to 3000
 app.set('port', process.env.PORT || 3000);
 
-app.listen(app.get('port'), () => console.log('server started'));
+app.listen(app.get('port'), () => console.log('Server started'));
