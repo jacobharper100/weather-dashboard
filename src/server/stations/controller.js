@@ -30,7 +30,7 @@ controller.add = async function (req, res) {
     try {
         await addedStation.save();
 
-        controller.stations[addedStation._id] = addedStation;
+        controller.stations[addedStation._id.toString()] = addedStation;
         if (!spawnWorker(addedStation)) {
             await Station.findByIdAndDelete(addedStation._id);
         }
@@ -51,7 +51,7 @@ controller.update = async function (req, res) {
         });
         await updatedStation.save();
 
-        controller.stations[updatedStation._id] = updatedStation;
+        controller.stations[updatedStation._id.toString()] = updatedStation;
         sendUpdateMessage(updatedStation);
 
         console.log('[!] Updated station (%s)', updatedStation.station_name);
@@ -71,7 +71,7 @@ controller.remove = async function (req, res) {
             res.status(404).send("No station found");
         } else {
             
-            delete controller.stations[deletedStation._id];
+            delete controller.stations[deletedStation._id.toString()];
             pool.kill(deletedStation)
 
             console.log('[!] Deleted station (%s)', deletedStation.station_name);
@@ -88,7 +88,7 @@ function spawnWorker(station) {
     const success = worker !== null;
 
     if (success) {
-        controller.stations[station._id] = {
+        controller.stations[station._id.toString()] = {
             station: station,
             data: null
         };
@@ -130,7 +130,7 @@ function sendUpdateMessage(station) {
 module.exports = controller;
 
 pool.on('message', (station, message) => {
-    controller.stations[station._id].data = message;
+    controller.stations[station._id.toString()].data = message;
 });
 
 pool.on('error', (station, err) => {

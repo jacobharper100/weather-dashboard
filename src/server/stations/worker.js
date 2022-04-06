@@ -1,10 +1,13 @@
 const { CronJob, CronTime } = require('cron');
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 const job = new CronJob('0 * * * * *', onTick);
 
 let station = {};
 let service = {};
 
 function onTick() {
+    
+
     // Call web service API and send data to parent via IPC
     // process.send(data);
 }
