@@ -18,10 +18,12 @@ const Stations = () => {
             });
     }
 
-    // Rows empty, fetch rows from server
     useEffect(() => {
         fetchRows();
-    }, [])
+        setInterval(() => {
+            fetchRows(); // Update rows every 5 seconds
+        }, 5000);
+    }, []);
 
     // Update selected weather station's information on the server
     // Currently this just means toggling the 'online' state
@@ -48,8 +50,7 @@ const Stations = () => {
 
         fetch(`/api/stations/${formState._id}`, requestOptions)
             .then(_ => {
-                // Remove row from rows
-                setRows(rows.filter(row => row._id !== formState._id));
+                fetchRows();
             });
     }
 
@@ -67,7 +68,7 @@ const Stations = () => {
         fetch('/api/stations', requestOptions)
             .then(res => res.json())
             .then(res => {
-                setRows([...rows, res]);
+                fetchRows();
             });
     };
 

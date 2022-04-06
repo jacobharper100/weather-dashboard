@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Station = mongoose.model('Station');
 const Service = mongoose.model('Service');
 const pool = require('./pool');
+
 const controller = {};
 
 controller.stations = {};
@@ -25,8 +26,21 @@ controller.init = function () {
 
 /** Get a list of all stations */
 controller.get = async function (req, res) {
-    
-    const stations = Object.values(controller.stations);
+    let stations = [];
+    Object.values(controller.stations).forEach(record => {
+        let station = {
+            _id: record.station._id,
+            station_name: record.station.station_name,
+            station_api: record.station.station_api,
+            station_location: record.station.station_location,
+            station_online: record.station.station_online,
+            station_weather: record.data?.station_weather,
+            station_temp: record.data?.station_temp,
+            station_pressure: record.data?.station_pressure,
+            station_humidity: record.data?.station_humidity
+        };
+        stations.push(station);
+    });
 
     res.send({ results: stations });
 }
@@ -38,7 +52,11 @@ controller.add = async function (req, res) {
     try {
         await addedStation.save();
 
-        controller.stations[addedStation._id.toString()] = addedStation;
+        controller.stations[addedStation._id.toString()] = {
+            station: addedStation,
+            data: null
+        };
+
         if (!spawnWorker(addedStation)) {
             await Station.findByIdAndDelete(addedStation._id);
         }
@@ -59,7 +77,11 @@ controller.update = async function (req, res) {
         });
         await updatedStation.save();
 
-        controller.stations[updatedStation._id.toString()] = updatedStation;
+        controller.stations[updatedStation._id.toString()].station = updatedStation;
+        if (!updatedStation.station_online) {
+            controller.stations[updatedStation._id.toString()].data = null;
+        }
+
         sendUpdateMessage(updatedStation);
 
         console.log('[!] Updated station (%s)', updatedStation.station_name);
@@ -124,8 +146,6 @@ function sendUpdateMessage(station) {
                 service: service
             });
         } else {
-            //console.warn('service with domain "%s" is not registered!', station.station_api);
-
             // Force station offline
             pool.send(station, {
                 station: { station_online: false },
@@ -138,6 +158,7 @@ function sendUpdateMessage(station) {
 module.exports = controller;
 
 pool.on('message', (station, message) => {
+    console.log('[!] Station (%s) queried API data', station.station_name);
     controller.stations[station._id.toString()].data = message;
 });
 

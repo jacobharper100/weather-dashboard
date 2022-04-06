@@ -5,7 +5,7 @@ const pool = new EventEmitter();
 pool.workers = {};
 
 pool.spawn = function (station) {
-    if (station._id in pool.workers) {
+    if (station._id.toString() in pool.workers) {
         console.error('failed to spawn station worker with duplicate id: %d', station._id);
         return null;
     }
@@ -21,7 +21,7 @@ pool.spawn = function (station) {
     });
 
     worker.once('exit', (code, signal) => {
-        delete pool.workers[station._id];
+        delete pool.workers[station._id.toString()];
         pool.emit('exit', station, code, signal);
     });
 
@@ -30,11 +30,12 @@ pool.spawn = function (station) {
 };
 
 pool.send = function (station, message) {
-    return pool.workers[station._id].send(message);
+    return pool.workers[station._id.toString()].send(message);
 };
 
 pool.kill = function (station, ...args) {
-    const worker = pool.workers[station._id];
+    const worker = pool.workers[station._id.toString()];
+    console.log('[!] Killed worker for station (%s)', station.station_name);
     Reflect.apply(worker.kill, worker, args);
 }
 
