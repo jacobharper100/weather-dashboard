@@ -32,15 +32,10 @@ const Stations = () => {
             body: JSON.stringify(row)
         };
 
-        fetch('/api/stations', requestOptions)
+        fetch(`/api/stations/${row._id}`, requestOptions)
             .then(res => res.json())
             .then(_ => {
-                setRows(rows.map(item => {
-                    if (item.id === row.id) {
-                        return row;
-                    }
-                    return item;
-                }));
+                fetchRows();
             });
     }
 
@@ -48,14 +43,12 @@ const Stations = () => {
     const handleDelete = (row) => {
         const requestOptions = {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(row)
+            headers: { 'Content-Type': 'application/json' }
         };
 
-        fetch('/api/stations', requestOptions)
-            .then(res => res.json())
+        fetch(`/api/stations/${row._id}`, requestOptions)
             .then(_ => {
-                setRows(rows.filter(item => item.id !== row.id));
+                fetchRows();
             });
     }
 

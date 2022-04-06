@@ -24,38 +24,63 @@ controller.init = function () {
 };
 
 /** Adds a new station to the station pool with an assigned ID. */
-controller.add = function (station) {
-    return Station.create(station).then((err, station) => {
-        if (err) {
-            console.error(err);
-        } else if (!spawnWorker(station)) {
-            Station.findByIdAndDelete(station._id);
+controller.add = async function (req, res) {
+    const addedStation = new Station(req.body);
+    
+    try {
+        await addedStation.save();
+
+        controller.stations[addedStation._id] = addedStation;
+        if (!spawnWorker(addedStation)) {
+            await Station.findByIdAndDelete(addedStation._id);
         }
-    }).then(() => station);
+
+        console.log('[!] Created station (%s)', addedStation.station_name);
+
+        res.status(200).send(addedStation);
+    } catch (err) {
+        res.status(500).send(err);
+    }
 };
 
 /** Updates an existing station. */
-controller.update = function (station) {
-    if (!(station._id in controller.stations)) {
-        return controller.add(station);
-    } else {
-        return Station.replaceOne({ id: station._id }, station).exec((err) => {
-            if (err) {
-                console.error(err);
-            } else {
-                controller.stations[station._id].station = station;
-                sendUpdateMessage(station);
-            }
-        }).then(() => station);
+controller.update = async function (req, res) {
+    try {
+        const updatedStation = await Station.findByIdAndUpdate(req.params.id, { 
+            station_online: !req.body.station_online 
+        });
+        await updatedStation.save();
+
+        controller.stations[updatedStation._id] = updatedStation;
+        sendUpdateMessage(updatedStation);
+
+        console.log('[!] Updated station (%s)', updatedStation.station_name);
+
+        res.status(200).send(updatedStation);
+    } catch (err) {
+        res.status(500).send(err);
     }
 };
 
 /** Removes a station from the pool AND storage. */
-controller.remove = function (station) {
-    return Station.findByIdAndDelete(station._id).exec(() => {
-        delete controller.stations[station._id];
-        pool.kill(station);
-    }).then(() => station);
+controller.remove = async function (req, res) {
+    try {
+        const deletedStation = await Station.findByIdAndDelete(req.params.id);
+
+        if (!deletedStation) {
+            res.status(404).send("No station found");
+        } else {
+            
+            delete controller.stations[deletedStation._id];
+            pool.kill(deletedStation)
+
+            console.log('[!] Deleted station (%s)', deletedStation.station_name);
+            
+            res.status(200).send();
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
 };
 
 function spawnWorker(station) {
@@ -69,7 +94,7 @@ function spawnWorker(station) {
         };
       
         worker.once('spawn', () => {
-            console.log('spawned worker .. PID:[%d], name:"%s", api:"%s", id:"%s"',
+            console.log('[!] Spawned worker process PID:[%d], Name:(%s), api:(%s), id:(%s)',
                 worker.pid,
                 station.station_name,
                 station.station_api,
@@ -91,7 +116,7 @@ function sendUpdateMessage(station) {
                 service: service
             });
         } else {
-            console.warn('service with domain "%s" is not registered!', station.station_api);
+            //console.warn('service with domain "%s" is not registered!', station.station_api);
 
             // Force station offline
             pool.send(station, {

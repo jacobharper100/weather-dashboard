@@ -105,6 +105,7 @@ const StationsList = (props) => {
             pageSize={10}
             rowsPerPageOptions={[10]}
             rows={props.rows}
+            getRowId={(row) => row._id}
         />
     );
 };

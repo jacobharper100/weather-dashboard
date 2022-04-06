@@ -1,34 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../stations/controller')
+const mongoose = require('mongoose');
+const Station = mongoose.model('Station');
+const Service = mongoose.model('Service');
 
 controller.init();
 
-router.route('/stations')
-    .get((_req, res) => {
 
-        const stationsList = Object.values(controller.stations)
-            .map(value => value.station);
+router.get('/stations', async (req, res) => {
+    const stations = await Station.find({});
 
-        res.status(200).send({ results: stationsList });
-    })
-    .post((req, res) => {
-        // controller.add(req.body).then(json => {
-        //     return res.status(200).json(json);
-        // });
-        res.status(200).send();
-    })
-    .put((_req, res) => {
-        // controller.update(req.body).then(json => {
-        //     return res.status(200).json(json);
-        // });
-        res.status(200).send();
-    })
-    .delete((_req, res) => {
-        // controller.remove(req.body).then(json => {
-        //     return res.status(200).json(json);
-        // });
-        res.status(200).send();
-    })
+    try {
+        res.send({ results: stations });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+router.post('/stations', (req, res) => {
+    controller.add(req, res);
+});
+
+router.put('/stations/:id', (req, res) => {
+    controller.update(req, res);
+});
+
+router.delete('/stations/:id', (req, res) => {
+    controller.remove(req, res);
+});
 
 module.exports = router;
